@@ -32,6 +32,13 @@ any of the `histogram` functions, please also cite
 Gehrels 1986 ApJ 303, 336.
 
 ## Example usage
+``` python
+from numpy.random import seed,randn 
+from histogram import *
+x = randn(66)
+x_err = 0.1*(x+0.05*randn(len(x)))
+c,b,clo,chi = hist_error(x,x_err=x_err)
+```
 
 ## BibTeX references (as provided by NASA/ADS)
 Flury et al. 2022 ApJS 260, 1
@@ -77,7 +84,7 @@ archivePrefix = {arXiv},
 }
 ```
 Gehrels 1986 ApJ 303, 336
-```
+``` bibtex
 @ARTICLE{1986ApJ...303..336G,
        author = {{Gehrels}, N.},
         title = "{Confidence Limits for Small Numbers of Events in Astrophysical Data}",
