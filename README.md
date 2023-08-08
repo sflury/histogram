@@ -39,6 +39,7 @@ x = randn(66)
 x_err = 0.1*(x+0.05*randn(len(x)))
 c,b,clo,chi = hist_error(x,x_err=x_err)
 ```
+![image of histograms with basic and Poisson binomial treatment](hist_examp.png "example histogram")
 
 ## BibTeX references (as provided by NASA/ADS)
 Flury et al. 2022 ApJS 260, 1
