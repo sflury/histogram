@@ -31,7 +31,7 @@ If no uncertainties are provided with the sample when using
 any of the `histogram` functions, please also cite
 Gehrels 1986 ApJ 303, 336.
 
-## Example usage
+## Example usage - histograms
 ``` python
 from numpy.random import seed,randn 
 from histogram import *
@@ -40,6 +40,20 @@ x_err = 0.1*(x+0.05*randn(len(x)))
 c,b,clo,chi = hist_error(x,x_err=x_err)
 ```
 ![image of histograms with basic and Poisson binomial treatment](hist_examp.png "example histogram")
+
+## Example usage - fractional distribution (histogram ratios)
+``` python
+from numpy.random import seed,rand,randn
+from numpy import where
+from histogram import *
+seed(123)
+x = randn(66)
+x_err = 0.1*(x+0.05*randn(len(x)))
+y = rand(66)
+p,c,plo,phi = frac_dist(x,np.where(y>0.5)[0],x_err=x_err)
+```
+![image of histogram ratios with Poisson binomial treatment](frac_examp.png "example fraction distribution")
+
 
 ## BibTeX references (as provided by NASA/ADS)
 Flury et al. 2022 ApJS 260, 1
