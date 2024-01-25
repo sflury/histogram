@@ -4,20 +4,30 @@ dependencies:
     scipy 1.4.1
 
 author:
-    Sophia Flury 2022.06.07
+    Sophia Flury 2024.01.25
 '''
 import numpy as np
 from scipy.special import ndtr,ndtri,erf,gammaincc,gammaln,iv
 from scipy.optimize import newton
-'''
-Name
-    bernoulli_rvs
 
-Purpose
-    Sample Bernoulli random variates of a given shape for a given probability of
-    success.
-'''
 def bernoulli_rvs(p,n_samp=int(1e4)):
+    '''
+    Name:
+        bernoulli_rvs
+
+    Purpose:
+        Sample Bernoulli random variates of a given shape for a given probability of
+        success.
+
+    Arguments:
+        :p (*float*): probability of success from an individual Bernoulli trial
+
+    Keyword Arguments:
+        :n_samp (*int*): number of samples to draw
+
+    Returns:
+        :rvs_b (*np.ndarray*): 1 x n_samp array of Bernoulli variates
+    '''
     # sample Bernoulli variates using uniform random variates
     rvs_u = np.random.uniform(size=n_samp)
     # assume no successful trials at first
@@ -25,25 +35,26 @@ def bernoulli_rvs(p,n_samp=int(1e4)):
     # if rvs_u < p, then bin trial is successful
     rvs_b[np.where(rvs_u < p)] = 1.
     return rvs_b
-'''
-Name
-    poisson_gehrels
 
-Purpose
-    Compute the poisson confidence intervals for counts n. Solves Gehrels (1986)
-    eqns 1 and 2 for lower and upper limits on n (p_l and p_u, respectively) by
-    root-finding.
-
-Arguments
-    :n (*float*): total counts
-    :p_conf (*float* or *np.ndarray*): two-sided probability intervals for which
-                            to compute confidence intervals
-
-Returns:
-    :conf_l (*np.ndarray*): lower confidences on p1=n1/n corresponding to p_conf
-    :conf_u (*np.ndarray*): upper confidences on p1=n1/n corresponding to p_conf
-'''
 def poisson_gehrels(n,p_conf):
+    '''
+    Name
+        poisson_gehrels
+
+    Purpose
+        Compute the poisson confidence intervals for counts n. Solves Gehrels (1986)
+        eqns 1 and 2 for lower and upper limits on n (p_l and p_u, respectively) by
+        root-finding.
+
+    Arguments
+        :n (*float*): total counts
+        :p_conf (*float* or *np.ndarray*): two-sided probability intervals for which
+                                to compute confidence intervals
+
+    Returns:
+        :conf_l (*np.ndarray*): lower confidences on p1=n1/n corresponding to p_conf
+        :conf_u (*np.ndarray*): upper confidences on p1=n1/n corresponding to p_conf
+    '''
     # check for array
     if not hasattr(p_conf,'__len__'):
         p_conf = np.array([p_conf])
@@ -75,27 +86,28 @@ def poisson_gehrels(n,p_conf):
         # set equal to zero and solve for pl using root-finding
         conf_u[i] = newton(func,max([n+np.sqrt(n),2]),tol=2**-32)
     return conf_l,conf_u
-'''
-Name
-    binom_gehrels
 
-Purpose
-    Compute the binomial confidence intervals for a binomial distribution for
-    counts n1 that are some fraction p1 of a total number of counts n=n1+n2
-    such that p1 = n1/n. Solves Gehrels (1986) eqns 16 and 17 for lower and
-    upper limits on p1 (p_l and p_u, respectively) by root-finding.
-
-Arguments
-    :n1 (*float*): number of counts of subset of n
-    :n (*float*): total counts
-    :p_conf (*float* or *np.ndarray*): two-sided probability intervals for which
-                            to compute confidence intervals
-
-Returns:
-    :conf_l (*np.ndarray*): lower confidences on p1=n1/n corresponding to p_conf
-    :conf_u (*np.ndarray*): upper confidences on p1=n1/n corresponding to p_conf
-'''
 def binom_gehrels(n1,n,p_conf):
+    '''
+    Name
+        binom_gehrels
+
+    Purpose
+        Compute the binomial confidence intervals for a binomial distribution for
+        counts n1 that are some fraction p1 of a total number of counts n=n1+n2
+        such that p1 = n1/n. Solves Gehrels (1986) eqns 16 and 17 for lower and
+        upper limits on p1 (p_l and p_u, respectively) by root-finding.
+
+    Arguments
+        :n1 (*float*): number of counts of subset of n
+        :n (*float*): total counts
+        :p_conf (*float* or *np.ndarray*): two-sided probability intervals for which
+                                to compute confidence intervals
+
+    Returns:
+        :conf_l (*np.ndarray*): lower confidences on p1=n1/n corresponding to p_conf
+        :conf_u (*np.ndarray*): upper confidences on p1=n1/n corresponding to p_conf
+    '''
     # fraction p1 = n1/(n1+n2)
     p1 = n1/n
     # check for array
@@ -140,26 +152,26 @@ def binom_gehrels(n1,n,p_conf):
                 conf_u[i] = p_u
     return conf_l,conf_u
 
-'''
-Name
-    hist_error
-
-Purpose
-    Compute the "true" histogram with uncertainties given a set of measurements,
-    their uncertainties, and bins.
-
-Arguments
-    :x (*np.ndarray*): array of measurements
-
-Returns
-    :cts (*np.ndarray*): the "counts" of x in each bin
-    :center (*np.ndarray*): the center of each bin
-    :cts_lower (*np.ndarray*): the lower uncertainty in cts
-    :cts_upper (*np.ndarray*): the upper uncertainty in cts
-'''
 # function to get error in histogram bin counts
 #
 def hist_error(x,x_err=None,bins=None):
+    '''
+    Name
+        hist_error
+
+    Purpose
+        Compute the "true" histogram with uncertainties given a set of measurements,
+        their uncertainties, and bins.
+
+    Arguments
+        :x (*np.ndarray*): array of measurements
+
+    Returns
+        :cts (*np.ndarray*): the "counts" of x in each bin
+        :center (*np.ndarray*): the center of each bin
+        :cts_lower (*np.ndarray*): the lower uncertainty in cts
+        :cts_upper (*np.ndarray*): the upper uncertainty in cts
+    '''
     # define bins if not provided
     if np.any(bins == None):
         bins = np.linspace(min(x)//1,max(x)//1+1,int(np.sqrt(len(x))))
@@ -207,24 +219,25 @@ def hist_error(x,x_err=None,bins=None):
             p_lo[i],p_up[i] = poisson_gehrels(counts[i]//1,0.68268949)
     # return
     return counts,cent,counts-p_lo,p_up-counts
-'''
-Name
-    calc_uniform_bins
 
-Purpose
-    Determine the edges for bins which are uniformly populated at confidence
-    interval specified according to the normal cumulative distribution function.
-
-Arguments
-    :x (*np.ndarray*): array of measurements
-
-Keyword Arguments
-    :conf (*float*): confidence interval for probit function, default is 0.95.
-
-Returns
-    :bins (*np.ndarray*): the bin edges
-'''
 def calc_uniform_bins(x,bin_conf=0.95):
+    '''
+    Name
+        calc_uniform_bins
+
+    Purpose
+        Determine the edges for bins which are uniformly populated at confidence
+        interval specified according to the normal cumulative distribution function.
+
+    Arguments
+        :x (*np.ndarray*): array of measurements
+
+    Keyword Arguments
+        :conf (*float*): confidence interval for probit function, default is 0.95.
+
+    Returns
+        :bins (*np.ndarray*): the bin edges
+    '''
     # optimal number of uniformly populated bins
     n_bins = int((2*(2*float(len(x))**2/ndtri(bin_conf))**0.2)//1+1)
     # number of measurements per bin
@@ -243,27 +256,28 @@ def calc_uniform_bins(x,bin_conf=0.95):
     bins[0] = x_sort[0]-abs(x_sort[-1]-x_sort[0])
     bins[-1] = x_sort[-1]+abs(x_sort[-1]-x_sort[0])
     return bins
-'''
-Name
-    frac_dist
 
-Purpose
-    Compute the fraction p1 of measurements x which satisfy some criterion and
-    determine 1-sigma confidence limits following Gehrels (1986).
-
-Arguments
-    :x (*np.ndarray*): array of measurements
-    :ind (*np.ndarray*): array of indices or booleans which select a subset of
-                        x by some specified criterion
-
-Returns
-    :p1 (*np.ndarray*): the fraction of x subset in each bin
-    :center (*np.ndarray*): the expected center of each bin from the
-                        expected value of each x within the bin range
-    :p1_lower (*np.ndarray*): the lower uncertainty in p1
-    :p1_upper (*np.ndarray*): the upper uncertainty in p1
-'''
 def frac_dist(x,inds,x_err=None,bins=None,bin_conf=0.99999,n_samp=10000):
+    '''
+    Name
+        frac_dist
+
+    Purpose
+        Compute the fraction p1 of measurements x which satisfy some criterion and
+        determine 1-sigma confidence limits following Gehrels (1986).
+
+    Arguments
+        :x (*np.ndarray*): array of measurements
+        :ind (*np.ndarray*): array of indices or booleans which select a subset of
+                            x by some specified criterion
+
+    Returns
+        :p1 (*np.ndarray*): the fraction of x subset in each bin
+        :center (*np.ndarray*): the expected center of each bin from the
+                            expected value of each x within the bin range
+        :p1_lower (*np.ndarray*): the lower uncertainty in p1
+        :p1_upper (*np.ndarray*): the upper uncertainty in p1
+    '''
     # calculate number of bins
     if np.any(bins == None):
         bins = int(np.sqrt(len(x)))-1
@@ -273,8 +287,8 @@ def frac_dist(x,inds,x_err=None,bins=None,bin_conf=0.99999,n_samp=10000):
     else:
         n_bins = np.copy(bins)
     # histograms
-    thist,bins = np.nanhistogram(x,bins=bins)
-    shist,bins = np.nanhistogram(x[inds],bins=bins)
+    thist,bins = np.histogram(x[np.where(np.isfinite(x))[0]],bins=bins)
+    shist,bins = np.histogram(x[inds][np.where(np.isfinite(x[inds]))[0]],bins=bins)
     # bin centers
     cent = (bins[:-1]+bins[1:])/2.
     # if x uncertainties provided, do an MC simulation of Bernoulli trials
