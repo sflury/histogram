@@ -114,6 +114,10 @@ Gehrels 1986 ApJ 303, 336
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
+
+[![DOI](https://zenodo.org/badge/673500166.svg)](https://doi.org/10.5281/zenodo.15577089)
+
+
 ## Licensing
 <a href="https://github.com/sflury/histogram">histogram</a> © 2022 by <a href="https://sflury.github.io">Sophia Flury</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>
 
